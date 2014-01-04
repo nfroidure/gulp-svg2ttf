@@ -1,7 +1,3 @@
-# gulp-svg2ttf
-
-gulp task to create a TTF font from an SVG font.
-
 # gulp-svg2ttf [![NPM version](https://badge.fury.io/js/gulp-svg2ttf.png)](https://npmjs.org/package/gulp-svg2ttf) [![Build status](https://secure.travis-ci.org/nfroidure/gulp-svg2ttf.png)](https://travis-ci.org/nfroidure/gulp-svg2ttf)
 > Create a TTF font from an SVG font with [Gulp](http://gulpjs.com/).
 
