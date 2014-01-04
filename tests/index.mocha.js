@@ -7,6 +7,15 @@ var gulp = require('gulp')
   , svg2ttf = require(__dirname + '/../src/index.js')
 ;
 
+// Erasing date to get an invariant created and modified font date
+Date = (function(d) {
+  function Date() {
+    d.call(this, 3600);
+  }
+  Date.now = d.now;
+  return Date;
+})(Date);
+
 describe('gulp-svg2ttf conversion', function() {
   var filename = __dirname + '/fixtures/iconsfont';
   var ttf = fs.readFileSync(filename + '.ttf');
@@ -15,12 +24,11 @@ describe('gulp-svg2ttf conversion', function() {
 
       gulp.src(filename + '.svg')
         .pipe(svg2ttf())
-        // Uncomment to regenerate the test files if change in the svg2ttf lib
+        // Uncomment to regenerate the test files if changes in the svg2ttf lib
         // .pipe(gulp.dest(__dirname + '/fixtures/'))
         .pipe(es.map(function(file) {
           assert.equal(file.contents.length, ttf.length);
-          // This do not work anymore, probably a fucking random chunk
-          //assert.equal(file.contents.toString('utf-8'), ttf.toString('utf-8'));
+          assert.equal(file.contents.toString('utf-8'), ttf.toString('utf-8'));
           done();
         }));
 
@@ -33,9 +41,8 @@ describe('gulp-svg2ttf conversion', function() {
         .pipe(es.map(function(file) {
           // Get the buffer to compare results
           file.contents.pipe(es.wait(function(err, data) {
-            // This do not work anymore, probably a fucking random chunk
-            //assert.equal(data, ttf.toString('utf-8'));
             assert.equal(data.length, ttf.toString('utf-8').length);
+            assert.equal(data, ttf.toString('utf-8'));
             done();
           }));
         }));
