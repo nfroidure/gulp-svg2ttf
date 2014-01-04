@@ -8,6 +8,7 @@ var gulp = require('gulp')
 ;
 
 // Erasing date to get an invariant created and modified font date
+// See: https://github.com/fontello/svg2ttf/blob/c6de4bd45d50afc6217e150dbc69f1cd3280f8fe/lib/sfnt.js#L19
 Date = (function(d) {
   function Date() {
     d.call(this, 3600);
