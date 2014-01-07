@@ -1,4 +1,4 @@
-var es = require('event-stream')
+var Stream = require('stream')
   , gutil = require('gulp-util')
   , BufferStreams = require('bufferstreams')
   , svg2ttf = require('svg2ttf')
@@ -28,14 +28,15 @@ function svg2ttfTransform(opt) {
 // Plugin function
 function svg2ttfGulp() {
 
-  return es.map(function (file, callback) {
+  var stream = Stream.PassThrough({objectMode: true});
+  
+  stream.on('data', function(file) {
     file.path = gutil.replaceExtension(file.path, ".ttf");
 
     // Buffers
     if(file.isBuffer()) {
       try {
         file.contents = new Buffer(svg2ttf(String(file.contents)).buffer);
-        callback(null, file);
       } catch(err) {
         callback(new gutil.PluginError('svg2ttf', err, {showStack: true}));
       }
@@ -43,9 +44,10 @@ function svg2ttfGulp() {
     // Streams
     } else {
       file.contents = file.contents.pipe(new BufferStreams(svg2ttfTransform()));
-      callback(null, file);
     }
   });
+  
+  return stream;
 
 };
 

@@ -32,9 +32,6 @@
     "gulp-util": "~2.2.5",
     "bufferstreams": "0.0.1"
   },
-  "peerDependencies": {
-    "grunt": "~0.4.1"
-  },
   "keywords": [
     "gulpplugin",
     "gulp",
