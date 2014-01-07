@@ -27,10 +27,11 @@ describe('gulp-svg2ttf conversion', function() {
         .pipe(svg2ttf())
         // Uncomment to regenerate the test files if changes in the svg2ttf lib
         // .pipe(gulp.dest(__dirname + '/fixtures/'))
-        .pipe(es.map(function(file) {
+        .pipe(es.through(function(file) {
           assert.equal(file.contents.length, ttf.length);
           assert.equal(file.contents.toString('utf-8'), ttf.toString('utf-8'));
-          done();
+        }, function() {
+            done();
         }));
 
   });
@@ -39,13 +40,14 @@ describe('gulp-svg2ttf conversion', function() {
 
       gulp.src(filename + '.svg', {buffer: false})
         .pipe(svg2ttf())
-        .pipe(es.map(function(file) {
+        .pipe(es.through(function(file) {
           // Get the buffer to compare results
           file.contents.pipe(es.wait(function(err, data) {
             assert.equal(data.length, ttf.toString('utf-8').length);
             assert.equal(data, ttf.toString('utf-8'));
-            done();
           }));
+        }, function() {
+            done();
         }));
 
   });
