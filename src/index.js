@@ -4,6 +4,8 @@ var Stream = require('stream')
   , svg2ttf = require('svg2ttf')
 ;
 
+const PLUGIN_NAME = 'gulp-svg2ttf';
+
 // File level transform function
 function svg2ttfTransform(opt) {
   // Return a callback function handling the buffered content
@@ -11,7 +13,7 @@ function svg2ttfTransform(opt) {
 
     // Handle any error
     if(err) {
-      cb(new gutil.PluginError('svg2ttf', err, {showStack: true}));
+      cb(new gutil.PluginError(PLUGIN_NAME, err, {showStack: true}));
     }
 
     // Use the buffered content
@@ -19,7 +21,7 @@ function svg2ttfTransform(opt) {
         buf = new Buffer(svg2ttf(String(buf)).buffer);
         cb(null, buf);
       } catch(err) {
-        cb(new gutil.PluginError('svg2ttf', err, {showStack: true}));
+        cb(new gutil.PluginError(PLUGIN_NAME, err, {showStack: true}));
       }
 
   };
@@ -38,7 +40,7 @@ function svg2ttfGulp() {
       try {
         file.contents = new Buffer(svg2ttf(String(file.contents)).buffer);
       } catch(err) {
-        callback(new gutil.PluginError('svg2ttf', err, {showStack: true}));
+        callback(new gutil.PluginError(PLUGIN_NAME, err, {showStack: true}));
       }
 
     // Streams
