@@ -21,6 +21,16 @@ gulp.task('svg2ttf', function(){
 });
 ```
 
+## API
+
+### svg2ttf(options)
+
+#### options.ignoreExt
+Type: `Boolean`
+Default value: `false`
+
+Set to true to also convert files that doesn't have the .svg extension.
+
 ### Contributing / Issues
 
 Please submit SVG to TTF related issues to the

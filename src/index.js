@@ -2,6 +2,7 @@ var Stream = require('stream')
   , gutil = require('gulp-util')
   , BufferStreams = require('bufferstreams')
   , svg2ttf = require('svg2ttf')
+  , path = require('path')
 ;
 
 const PLUGIN_NAME = 'gulp-svg2ttf';
@@ -28,11 +29,17 @@ function svg2ttfTransform(opt) {
 }
 
 // Plugin function
-function svg2ttfGulp() {
+function svg2ttfGulp(options) {
+
+  options = options || {};
+  options.ignoreExt = options.ignoreExt || false;
 
   var stream = Stream.PassThrough({objectMode: true});
   
   stream.on('data', function(file) {
+    if(file.isNull()) return; // Do nothing
+    if((!options.ignoreExt) && '.svg' !== path.extname(file.path)) return;
+
     file.path = gutil.replaceExtension(file.path, ".ttf");
 
     // Buffers
@@ -40,7 +47,8 @@ function svg2ttfGulp() {
       try {
         file.contents = new Buffer(svg2ttf(String(file.contents)).buffer);
       } catch(err) {
-        callback(new gutil.PluginError(PLUGIN_NAME, err, {showStack: true}));
+        stream.emit('error', 
+          new gutil.PluginError(PLUGIN_NAME, err, {showStack: true}));
       }
 
     // Streams

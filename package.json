@@ -1,7 +1,7 @@
 {
   "name": "gulp-svg2ttf",
   "description": "Create a TTF font from an SVG font",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/nfroidure/gulp-svg2ttf",
   "author": {
     "name": "Nicolas Froidure",
