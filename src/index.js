@@ -33,20 +33,25 @@ function svg2ttfGulp(options) {
 
   options = options || {};
   options.ignoreExt = options.ignoreExt || false;
+  options.clone = options.clone || false;
 
   var stream = Stream.Transform({objectMode: true});
   
   stream._transform = function(file, unused, done) {
      // When null just pass through
     if(file.isNull()) {
-      this.push(file); done();
+      stream.push(file); done();
       return;
     }
 
     // If the ext doesn't match, pass it through
     if((!options.ignoreExt) && '.svg' !== path.extname(file.path)) {
-      this.push(file); done();
+      stream.push(file); done();
       return;
+    }
+
+    if(options.clone) {
+      stream.push(file.clone());
     }
 
     file.path = gutil.replaceExtension(file.path, ".ttf");

@@ -51,16 +51,39 @@ describe('gulp-svg2ttf conversion', function() {
     it('should work', function(done) {
 
         var n = 0;
-        gulp.src(filename + '.svg')
-          .pipe(svg2ttf(), {buffer: true})
+        gulp.src(filename + '.svg', {buffer: true})
+          .pipe(svg2ttf())
           // Uncomment to regenerate the test files if changes in the svg2ttf lib
           // .pipe(gulp.dest(__dirname + '/fixtures/'))
           .pipe(es.through(function(file) {
+            assert.equal(file.path, filename + '.ttf');
             assert.equal(file.contents.length, ttf.length);
             assert.equal(file.contents.toString('utf-8'), ttf.toString('utf-8'));
             n++;
           }, function() {
             assert.equal(n,1);
+            done();
+          }));
+
+    });
+
+    it('should work with the clone option', function(done) {
+
+        var n = 0;
+        gulp.src(filename + '.svg', {buffer: true})
+          .pipe(svg2ttf({clone: true}))
+          .pipe(es.through(function(file) {
+            if(file.path === filename + '.ttf') {
+              assert.equal(file.contents.length, ttf.length);
+              assert.equal(file.contents.toString('utf-8'), ttf.toString('utf-8'));
+            } else {
+              assert.equal(file.path, filename + '.svg');
+              assert.equal(file.contents.toString('utf-8'),
+                fs.readFileSync(filename + '.svg','utf-8'));
+            }
+            n++;
+          }, function() {
+            assert.equal(n,2);
             done();
           }));
 
@@ -95,6 +118,7 @@ describe('gulp-svg2ttf conversion', function() {
         gulp.src(filename + '.svg', {buffer: false})
           .pipe(svg2ttf())
           .pipe(es.through(function(file) {
+            assert.equal(file.path, filename + '.ttf');
             // Get the buffer to compare results
             file.contents.pipe(es.wait(function(err, data) {
               assert.equal(data.length, ttf.toString('utf-8').length);
@@ -103,6 +127,31 @@ describe('gulp-svg2ttf conversion', function() {
             n++;
           }, function() {
             assert.equal(n,1);
+            done();
+          }));
+
+    });
+
+    it('should work with the clone option', function(done) {
+
+        var n = 0;
+        gulp.src(filename + '.svg', {buffer: false})
+          .pipe(svg2ttf({clone: true}))
+          .pipe(es.through(function(file) {
+            if(file.path === filename + '.ttf') {
+              file.contents.pipe(es.wait(function(err, data) {
+                assert.equal(data.length, ttf.toString('utf-8').length);
+                assert.equal(data, ttf.toString('utf-8'));
+              }));
+            } else {
+              assert.equal(file.path, filename + '.svg');
+              file.contents.pipe(es.wait(function(err, data) {
+                assert.equal(data, fs.readFileSync(filename + '.svg','utf-8'));
+              }));
+            }
+            n++;
+          }, function() {
+            assert.equal(n,2);
             done();
           }));
 
