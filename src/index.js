@@ -34,11 +34,11 @@ function svg2ttfGulp(options) {
   options = options || {};
   options.ignoreExt = options.ignoreExt || false;
 
-  var stream = Stream.PassThrough({objectMode: true});
+  var stream = Stream.Transform({objectMode: true});
   
-  stream.on('data', function(file) {
-    if(file.isNull()) return; // Do nothing
-    if((!options.ignoreExt) && '.svg' !== path.extname(file.path)) return;
+  stream._transform = function(file, unused, done) {
+    if(file.isNull()) return done(); // Do nothing
+    if((!options.ignoreExt) && '.svg' !== path.extname(file.path)) return done();
 
     file.path = gutil.replaceExtension(file.path, ".ttf");
 
@@ -55,7 +55,13 @@ function svg2ttfGulp(options) {
     } else {
       file.contents = file.contents.pipe(new BufferStreams(svg2ttfTransform()));
     }
-  });
+    stream.push(file);
+    done();
+  };
+
+  stream._flush = function(done) {
+    done();
+  };
   
   return stream;
 
