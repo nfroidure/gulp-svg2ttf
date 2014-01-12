@@ -31,6 +31,13 @@ Default value: `false`
 
 Set to true to also convert files that doesn't have the .svg extension.
 
+#### options.clone
+Type: `Boolean`
+Default value: `false`
+
+Set to true to clone the file before converting him so that it will output the
+ original file too.
+
 ### Contributing / Issues
 
 Please submit SVG to TTF related issues to the
