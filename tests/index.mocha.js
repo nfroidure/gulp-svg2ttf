@@ -23,9 +23,34 @@ describe('gulp-svg2ttf conversion', function() {
   var filename = __dirname + '/fixtures/iconsfont';
   var ttf = fs.readFileSync(filename + '.ttf');
 
+  describe('with null contents', function() {
+
+    it('should let null files pass through', function(done) {
+
+        var s = svg2ttf()
+          , n = 0;
+        s.pipe(es.through(function(file) {
+            assert.equal(file.path,'bibabelula.foo');
+            assert.equal(file.contents, null);
+            n++;
+          }, function() {
+            assert.equal(n,1);
+            done();
+          }));
+        s.write(new gutil.File({
+          path: 'bibabelula.foo',
+          contents: null
+        }));
+        s.end();
+
+    });
+
+  });
+
   describe('in buffer mode', function() {
     it('should work', function(done) {
 
+        var n = 0;
         gulp.src(filename + '.svg')
           .pipe(svg2ttf(), {buffer: true})
           // Uncomment to regenerate the test files if changes in the svg2ttf lib
@@ -33,20 +58,25 @@ describe('gulp-svg2ttf conversion', function() {
           .pipe(es.through(function(file) {
             assert.equal(file.contents.length, ttf.length);
             assert.equal(file.contents.toString('utf-8'), ttf.toString('utf-8'));
+            n++;
           }, function() {
-              done();
+            assert.equal(n,1);
+            done();
           }));
 
     });
 
     it('should let non-svg files pass through', function(done) {
 
-        var s = svg2ttf();
+        var s = svg2ttf()
+          , n = 0;
         s.pipe(es.through(function(file) {
             assert.equal(file.path,'bibabelula.foo');
             assert.equal(file.contents.toString('utf-8'), 'ohyeah');
+            n++;
           }, function() {
-              done();
+            assert.equal(n,1);
+            done();
           }));
         s.write(new gutil.File({
           path: 'bibabelula.foo',
@@ -61,6 +91,7 @@ describe('gulp-svg2ttf conversion', function() {
   describe('in stream mode', function() {
     it('should work', function(done) {
 
+        var n = 0;
         gulp.src(filename + '.svg', {buffer: false})
           .pipe(svg2ttf())
           .pipe(es.through(function(file) {
@@ -69,20 +100,25 @@ describe('gulp-svg2ttf conversion', function() {
               assert.equal(data.length, ttf.toString('utf-8').length);
               assert.equal(data, ttf.toString('utf-8'));
             }));
+            n++;
           }, function() {
-              done();
+            assert.equal(n,1);
+            done();
           }));
 
     });
 
     it('should let non-svg files pass through', function(done) {
 
-        var s = svg2ttf();
+        var s = svg2ttf()
+          , n = 0;
         s.pipe(es.through(function(file) {
             assert.equal(file.path,'bibabelula.foo', {buffer: false});
             assert(file.contents instanceof Stream.PassThrough);
+            n++;
           }, function() {
-              done();
+            assert.equal(n,1);
+            done();
           }));
         s.write(new gutil.File({
           path: 'bibabelula.foo',
