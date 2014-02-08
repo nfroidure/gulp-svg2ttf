@@ -162,7 +162,7 @@ describe('gulp-svg2ttf conversion', function() {
         var s = svg2ttf()
           , n = 0;
         s.pipe(es.through(function(file) {
-            assert.equal(file.path,'bibabelula.foo', {buffer: false});
+            assert.equal(file.path,'bibabelula.foo');
             assert(file.contents instanceof Stream.PassThrough);
             n++;
           }, function() {
