@@ -1,5 +1,7 @@
-# gulp-svg2ttf [![NPM version](https://badge.fury.io/js/gulp-svg2ttf.png)](https://npmjs.org/package/gulp-svg2ttf) [![Build status](https://secure.travis-ci.org/nfroidure/gulp-svg2ttf.png)](https://travis-ci.org/nfroidure/gulp-svg2ttf)
+# gulp-svg2ttf
 > Create a TTF font from an SVG font with [Gulp](http://gulpjs.com/).
+
+[![NPM version](https://badge.fury.io/js/gulp-svg2ttf.png)](https://npmjs.org/package/gulp-iconfont) [![Build status](https://secure.travis-ci.org/nfroidure/gulp-iconfont.png)](https://travis-ci.org/nfroidure/gulp-iconfont) [![Dependency Status](https://david-dm.org/nfroidure/gulp-iconfont.png)](https://david-dm.org/nfroidure/gulp-iconfont) [![devDependency Status](https://david-dm.org/nfroidure/gulp-iconfont/dev-status.png)](https://david-dm.org/nfroidure/gulp-iconfont#info=devDependencies) [![Coverage Status](https://coveralls.io/repos/nfroidure/gulp-iconfont/badge.png?branch=master)](https://coveralls.io/r/nfroidure/gulp-iconfont?branch=master) [![Code Climate](https://codeclimate.com/github/nfroidure/gulp-iconfont.png)](https://codeclimate.com/github/nfroidure/gulp-iconfont)
 
 ## Usage
 
@@ -20,6 +22,11 @@ gulp.task('svg2ttf', function(){
     .pipe(gulp.dest('fonts/'));
 });
 ```
+
+## Stats
+
+[![NPM](https://nodei.co/npm/gulp-svg2ttf.png?downloads=true&stars=true)](https://nodei.co/npm/gulp-iconfont/)
+[![NPM](https://nodei.co/npm-dl/gulp-svg2ttf.png)](https://nodei.co/npm/gulp-iconfont/)
 
 ## API
 
