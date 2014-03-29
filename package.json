@@ -30,7 +30,8 @@
   "dependencies": {
     "svg2ttf": "~1.1.2",
     "gulp-util": "~2.2.14",
-    "bufferstreams": "0.0.2"
+    "bufferstreams": "0.0.2",
+    "readable-stream": "^1.0.26-2"
   },
   "keywords": [
     "gulpplugin",
