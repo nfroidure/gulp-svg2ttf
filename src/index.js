@@ -1,4 +1,4 @@
-var Stream = require('stream')
+var Stream = require('readable-stream')
   , gutil = require('gulp-util')
   , BufferStreams = require('bufferstreams')
   , svg2ttf = require('svg2ttf')
