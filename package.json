@@ -1,7 +1,7 @@
 {
   "name": "gulp-svg2ttf",
   "description": "Create a TTF font from an SVG font",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "homepage": "https://github.com/nfroidure/gulp-svg2ttf",
   "author": {
     "name": "Nicolas Froidure",
@@ -29,9 +29,9 @@
   },
   "dependencies": {
     "svg2ttf": "~1.1.2",
-    "gulp-util": "~2.2.14",
+    "gulp-util": "~2.2.15",
     "bufferstreams": "0.0.2",
-    "readable-stream": "^1.0.26-2"
+    "readable-stream": "^1.0.27-1"
   },
   "keywords": [
     "gulpplugin",
@@ -43,8 +43,8 @@
     "converter"
   ],
   "devDependencies": {
-    "gulp": "~3.6.0",
-    "mocha": "~1.18.2",
-    "event-stream": "~3.1.1"
+    "gulp": "~3.7.0",
+    "mocha": "~1.20.0",
+    "event-stream": "~3.1.5"
   }
 }
