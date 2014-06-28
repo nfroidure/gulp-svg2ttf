@@ -50,8 +50,19 @@ function svg2ttfGulp(options) {
       return;
     }
 
+    // Fix for the vinyl clone method...
+    // https://github.com/wearefractal/vinyl/pull/9
     if(options.clone) {
-      stream.push(file.clone());
+      if(file.isBuffer()) {
+        stream.push(file.clone());
+      } else {
+        var cntStream = file.contents;
+        file.contents = null;
+        var newFile = file.clone();
+        file.contents = cntStream.pipe(new Stream.PassThrough());
+        newFile.contents = cntStream.pipe(new Stream.PassThrough());
+        stream.push(newFile);
+      }
     }
 
     file.path = gutil.replaceExtension(file.path, ".ttf");
