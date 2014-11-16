@@ -31,7 +31,7 @@
     "svg2ttf": "~1.2.0",
     "gulp-util": "~3.0.1",
     "bufferstreams": "0.0.2",
-    "readable-stream": "^1.0.32"
+    "readable-stream": "^1.0.33"
   },
   "keywords": [
     "gulpplugin",
@@ -43,8 +43,8 @@
     "converter"
   ],
   "devDependencies": {
-    "gulp": "~3.8.8",
-    "mocha": "~1.21.4",
+    "gulp": "~3.8.10",
+    "mocha": "~2.0.1",
     "event-stream": "~3.1.7"
   }
 }
