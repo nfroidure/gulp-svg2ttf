@@ -29,8 +29,8 @@
   },
   "dependencies": {
     "svg2ttf": "~1.2.0",
-    "gulp-util": "~3.0.1",
-    "bufferstreams": "0.0.2",
+    "gulp-util": "~3.0.3",
+    "bufferstreams": "1.0.1",
     "readable-stream": "^1.0.33"
   },
   "keywords": [
@@ -44,7 +44,7 @@
   ],
   "devDependencies": {
     "gulp": "~3.8.10",
-    "mocha": "~2.0.1",
-    "event-stream": "~3.1.7"
+    "mocha": "~2.1.0",
+    "event-stream": "~3.2.2"
   }
 }
