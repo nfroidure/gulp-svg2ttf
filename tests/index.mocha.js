@@ -2,7 +2,7 @@
 
 var gulp = require('gulp')
   , assert = require('assert')
-  , es = require('event-stream')
+  , StreamTest = require('streamtest')
   , fs = require('fs')
   , svg2ttf = require(__dirname + '/../src/index.js')
   , Stream = require('stream')
@@ -23,159 +23,153 @@ describe('gulp-svg2ttf conversion', function() {
   var filename = __dirname + '/fixtures/iconsfont';
   var ttf = fs.readFileSync(filename + '.ttf');
 
-  describe('with null contents', function() {
+  // Iterating through versions
+  StreamTest.versions.forEach(function(version) {
 
-    it('should let null files pass through', function(done) {
+    describe('for ' + version + ' streams', function() {
 
-        var s = svg2ttf()
-          , n = 0;
-        s.pipe(es.through(function(file) {
-            assert.equal(file.path,'bibabelula.foo');
-            assert.equal(file.contents, null);
-            n++;
-          }, function() {
-            assert.equal(n,1);
-            done();
-          }));
-        s.write(new gutil.File({
-          path: 'bibabelula.foo',
-          contents: null
-        }));
-        s.end();
+      describe('with null contents', function() {
 
-    });
-
-  });
-
-  describe('in buffer mode', function() {
-    it('should work', function(done) {
-
-        var n = 0;
-        gulp.src(filename + '.svg', {buffer: true})
-          .pipe(svg2ttf())
-          // Uncomment to regenerate the test files if changes in the svg2ttf lib
-          // .pipe(gulp.dest(__dirname + '/fixtures/'))
-          .pipe(es.through(function(file) {
-            assert.equal(file.path, filename + '.ttf');
-            assert.equal(file.contents.length, ttf.length);
-            assert.equal(file.contents.toString('utf-8'), ttf.toString('utf-8'));
-            n++;
-          }, function() {
-            assert.equal(n,1);
-            done();
-          }));
-
-    });
-
-    it('should work with the clone option', function(done) {
-
-        var n = 0;
-        gulp.src(filename + '.svg', {buffer: true})
-          .pipe(svg2ttf({clone: true}))
-          .pipe(es.through(function(file) {
-            if(file.path === filename + '.ttf') {
-              assert.equal(file.contents.length, ttf.length);
-              assert.equal(file.contents.toString('utf-8'), ttf.toString('utf-8'));
-            } else {
-              assert.equal(file.path, filename + '.svg');
-              assert.equal(file.contents.toString('utf-8'),
-                fs.readFileSync(filename + '.svg','utf-8'));
-            }
-            n++;
-          }, function() {
-            assert.equal(n,2);
-            done();
-          }));
-
-    });
-
-    it('should let non-svg files pass through', function(done) {
-
-        var s = svg2ttf()
-          , n = 0;
-        s.pipe(es.through(function(file) {
-            assert.equal(file.path,'bibabelula.foo');
-            assert.equal(file.contents.toString('utf-8'), 'ohyeah');
-            n++;
-          }, function() {
-            assert.equal(n,1);
-            done();
-          }));
-        s.write(new gutil.File({
-          path: 'bibabelula.foo',
-          contents: new Buffer('ohyeah')
-        }));
-        s.end();
-
-    });
-  });
-
-
-  describe('in stream mode', function() {
-    it('should work', function(done) {
-
-        var n = 0;
-        gulp.src(filename + '.svg', {buffer: false})
-          .pipe(svg2ttf())
-          .pipe(es.through(function(file) {
-            assert.equal(file.path, filename + '.ttf');
-            // Get the buffer to compare results
-            file.contents.pipe(es.wait(function(err, data) {
-              assert.equal(data.length, ttf.toString('utf-8').length);
-              assert.equal(data, ttf.toString('utf-8'));
+        it('should let null files pass through', function(done) {
+            
+            StreamTest[version].fromObjects([new gutil.File({
+              path: 'bibabelula.foo',
+              contents: null
+            })])
+            .pipe(svg2ttf())
+            .pipe(StreamTest[version].toObjects(function(err, objs) {
+              if(err) {
+                done(err);
+              }
+              assert.equal(objs.length, 1);
+              assert.equal(objs[0].path, 'bibabelula.foo');
+              assert.equal(objs[0].contents, null);
+              done();
             }));
-            n++;
-          }, function() {
-            assert.equal(n,1);
-            done();
-          }));
 
-    });
+        });
 
-    it('should work with the clone option', function(done) {
+      });
 
-        var n = 0;
-        gulp.src(filename + '.svg', {buffer: false})
-          .pipe(svg2ttf({clone: true}))
-          .pipe(es.through(function(file) {
-            if(file.path === filename + '.ttf') {
-              file.contents.pipe(es.wait(function(err, data) {
-                assert.equal(data.length, ttf.toString('utf-8').length);
-                assert.equal(data, ttf.toString('utf-8'));
+      describe('in buffer mode', function() {
+
+        it('should work', function(done) {
+
+          gulp.src(filename + '.svg', {buffer: true})
+            .pipe(svg2ttf())
+            // Uncomment to regenerate the test files if changes in the svg2ttf lib
+            // .pipe(gulp.dest(__dirname + '/fixtures/'))
+            .pipe(StreamTest[version].toObjects(function(err, objs) {
+              if(err) {
+                done(err);
+              }
+              assert.equal(objs.length, 1);
+              assert.equal(objs[0].path, filename + '.ttf');
+              assert.equal(objs[0].contents.toString('utf-8'), ttf.toString('utf-8'));
+              done();
+            }));
+
+        });
+
+        it('should work with the clone option', function(done) {
+
+          gulp.src(filename + '.svg', {buffer: true})
+            .pipe(svg2ttf({clone: true}))
+            .pipe(StreamTest[version].toObjects(function(err, objs) {
+              if(err) {
+                done(err);
+              }
+              assert.equal(objs.length, 2);
+              assert.equal(objs[0].path, filename + '.svg');
+              assert.equal(objs[0].contents.toString('utf-8'), fs.readFileSync(filename + '.svg','utf-8'));
+              assert.equal(objs[1].path, filename + '.ttf');
+              assert.equal(objs[1].contents.toString('utf-8'), ttf.toString('utf-8'));
+              done();
+            }));
+
+        });
+
+        it('should let non-svg files pass through', function(done) {
+            
+            StreamTest[version].fromObjects([new gutil.File({
+              path: 'bibabelula.foo',
+              contents: new Buffer('ohyeah')
+            })])
+            .pipe(svg2ttf())
+            .pipe(StreamTest[version].toObjects(function(err, objs) {
+                assert.equal(objs.length, 1);
+                assert.equal(objs[0].path, 'bibabelula.foo');
+                assert.equal(objs[0].contents.toString('utf-8'), 'ohyeah');
+                done();
+            }));
+
+        });
+      });
+
+
+      describe('in stream mode', function() {
+        it('should work', function(done) {
+
+          gulp.src(filename + '.svg', {buffer: false})
+            .pipe(svg2ttf())
+            .pipe(StreamTest[version].toObjects(function(err, objs) {
+              if(err) {
+                done(err);
+              }
+              assert.equal(objs.length, 1);
+              assert.equal(objs[0].path, filename + '.ttf');
+              objs[0].contents.pipe(StreamTest[version].toText(function(err, text) {
+                assert.equal(text, ttf.toString('utf-8'));
+                done();
               }));
-            } else {
-              assert.equal(file.path, filename + '.svg');
-              file.contents.pipe(es.wait(function(err, data) {
-                assert.equal(data, fs.readFileSync(filename + '.svg','utf-8'));
+            }));
+
+        });
+
+        it('should work with the clone option', function(done) {
+
+          gulp.src(filename + '.svg', {buffer: false})
+            .pipe(svg2ttf({clone: true}))
+            .pipe(StreamTest[version].toObjects(function(err, objs) {
+              if(err) {
+                done(err);
+              }
+              assert.equal(objs.length, 2);
+              assert.equal(objs[0].path, filename + '.svg');
+              assert.equal(objs[1].path, filename + '.ttf');
+              objs[0].contents.pipe(StreamTest[version].toText(function(err, text) {
+                assert.equal(text, fs.readFileSync(filename + '.svg','utf-8'));
+                objs[1].contents.pipe(StreamTest[version].toText(function(err, text) {
+                  assert.equal(text, ttf.toString('utf-8'));
+                  done();
+                }));
               }));
+            }));
+
+        });
+
+        it('should let non-svg files pass through', function(done) {
+            
+          StreamTest[version].fromObjects([new gutil.File({
+            path: 'bibabelula.foo',
+            contents: new Stream.PassThrough()
+          })])
+          .pipe(svg2ttf())
+          .pipe(StreamTest[version].toObjects(function(err, objs) {
+            if(err) {
+              done(err);
             }
-            n++;
-          }, function() {
-            assert.equal(n,2);
+            assert.equal(objs.length, 1);
+            assert.equal(objs[0].path, 'bibabelula.foo');
+            assert(objs[0].contents instanceof Stream.PassThrough);
             done();
           }));
 
-    });
-
-    it('should let non-svg files pass through', function(done) {
-
-        var s = svg2ttf()
-          , n = 0;
-        s.pipe(es.through(function(file) {
-            assert.equal(file.path,'bibabelula.foo');
-            assert(file.contents instanceof Stream.PassThrough);
-            n++;
-          }, function() {
-            assert.equal(n,1);
-            done();
-          }));
-        s.write(new gutil.File({
-          path: 'bibabelula.foo',
-          contents: new Stream.PassThrough()
-        }));
-        s.end();
+        });
+      });
 
     });
+
   });
 
 });

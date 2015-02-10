@@ -28,10 +28,10 @@
     "test": "mocha tests/*.mocha.js"
   },
   "dependencies": {
-    "svg2ttf": "~1.2.0",
-    "gulp-util": "~3.0.3",
     "bufferstreams": "1.0.1",
-    "readable-stream": "^1.0.33"
+    "gulp-util": "~3.0.3",
+    "readable-stream": "^1.0.33",
+    "svg2ttf": "~1.2.0"
   },
   "keywords": [
     "gulpplugin",
@@ -43,8 +43,8 @@
     "converter"
   ],
   "devDependencies": {
-    "gulp": "~3.8.10",
+    "gulp": "~3.8.11",
     "mocha": "~2.1.0",
-    "event-stream": "~3.2.2"
+    "streamtest": "^1.1.0"
   }
 }
