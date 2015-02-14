@@ -1,9 +1,8 @@
-var Stream = require('readable-stream')
-  , gutil = require('gulp-util')
-  , BufferStreams = require('bufferstreams')
-  , svg2ttf = require('svg2ttf')
-  , path = require('path')
-;
+var path = require('path');
+var Stream = require('readable-stream');
+var gutil = require('gulp-util');
+var BufferStreams = require('bufferstreams');
+var svg2ttf = require('svg2ttf');
 
 const PLUGIN_NAME = 'gulp-svg2ttf';
 

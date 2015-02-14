@@ -1,13 +1,14 @@
 'use strict';
 
-var gulp = require('gulp')
-  , assert = require('assert')
-  , StreamTest = require('streamtest')
-  , fs = require('fs')
-  , svg2ttf = require(__dirname + '/../src/index.js')
-  , Stream = require('stream')
-  , gutil = require('gulp-util')
-;
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+var Stream = require('stream');
+var fs = require('fs');
+
+var assert = require('assert');
+var StreamTest = require('streamtest');
+
+var svg2ttf = require('../src/index.js');
 
 // Erasing date to get an invariant created and modified font date
 // See: https://github.com/fontello/svg2ttf/blob/c6de4bd45d50afc6217e150dbc69f1cd3280f8fe/lib/sfnt.js#L19
