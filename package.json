@@ -31,7 +31,7 @@
     "bufferstreams": "1.0.1",
     "gulp-util": "~3.0.3",
     "readable-stream": "^1.0.33",
-    "svg2ttf": "~1.2.0"
+    "svg2ttf": "^2.0.0"
   },
   "keywords": [
     "gulpplugin",
