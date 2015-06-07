@@ -59,7 +59,7 @@ describe('gulp-svg2ttf conversion', function() {
           gulp.src(filename + '.svg', {buffer: true})
             .pipe(svg2ttf())
             // Uncomment to regenerate the test files if changes in the svg2ttf lib
-            // .pipe(gulp.dest(__dirname + '/fixtures/'))
+            //.pipe(gulp.dest(__dirname + '/fixtures/'))
             .pipe(StreamTest[version].toObjects(function(err, objs) {
               if(err) {
                 done(err);
