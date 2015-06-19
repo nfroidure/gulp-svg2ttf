@@ -45,6 +45,13 @@ Default value: `false`
 Set to true to clone the file before converting him so that it will output the
  original file too.
 
+#### options.svg2ttfOption
+Type: `Object`
+Default value: `{}`
+
+Pass options to `svg2ttf`.
+See: [svg2ttf options](https://github.com/fontello/svg2ttf#svg2ttfsvgfontstring-options---buf)
+
 ### Note
 
 You may look after a full Gulp web font workflow, see
