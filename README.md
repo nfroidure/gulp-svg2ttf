@@ -45,6 +45,18 @@ Default value: `false`
 Set to true to clone the file before converting him so that it will output the
  original file too.
 
+#### options.timestamp
+Type: `Number`
+Default value: `Math.round(Date.now()/1000)`
+
+Override the TTF font creation/modification date.
+
+#### options.copyright
+Type: `String`
+Default value: Fontello ad or SVG Font copyright metadata.
+
+Allows to set to your copyright informations.
+
 ### Note
 
 You may look after a full Gulp web font workflow, see
