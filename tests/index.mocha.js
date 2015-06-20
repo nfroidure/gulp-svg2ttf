@@ -13,6 +13,7 @@ var svg2ttf = require('../src/index.js');
 describe('gulp-svg2ttf conversion', function() {
   var filename = __dirname + '/fixtures/iconsfont';
   var ttf = fs.readFileSync(filename + '.ttf');
+  var ttfCopyfighted = fs.readFileSync(filename + '-copyright.ttf');
   var generationTimestamp = 3;
 
   // Iterating through versions
@@ -54,7 +55,7 @@ describe('gulp-svg2ttf conversion', function() {
               timestamp: generationTimestamp
             }))
             // Uncomment to regenerate the test files if changes in the svg2ttf lib
-            //.pipe(gulp.dest(__dirname + '/fixtures/'))
+            .pipe(gulp.dest(__dirname + '/fixtures/'))
             .pipe(StreamTest[version].toObjects(function(err, objs) {
               if(err) {
                 done(err);
@@ -62,6 +63,27 @@ describe('gulp-svg2ttf conversion', function() {
               assert.equal(objs.length, 1);
               assert.equal(objs[0].path, filename + '.ttf');
               assert.equal(objs[0].contents.toString('utf-8'), ttf.toString('utf-8'));
+              done();
+            }));
+
+        });
+
+        it('should work with the copyright option', function(done) {
+
+          gulp.src(filename + '.svg', {buffer: true})
+            .pipe(svg2ttf({
+              timestamp: generationTimestamp,
+              copyright: 'Brothershood of mens 2015 - Infinity'
+            }))
+            // Uncomment to regenerate the test files if changes in the svg2ttf lib
+            //.pipe(gulp.dest(__dirname + '/fixtures/'))
+            .pipe(StreamTest[version].toObjects(function(err, objs) {
+              if(err) {
+                done(err);
+              }
+              assert.equal(objs.length, 1);
+              assert.equal(objs[0].path, filename + '.ttf');
+              assert.deepEqual(objs[0].contents, ttfCopyfighted);
               done();
             }));
 
