@@ -7,7 +7,7 @@ var svg2ttf = require('svg2ttf');
 const PLUGIN_NAME = 'gulp-svg2ttf';
 
 // File level transform function
-function svg2ttfTransform(opt) {
+function svg2ttfTransform(options) {
   // Return a callback function handling the buffered content
   return function(err, buf, cb) {
 
@@ -18,10 +18,13 @@ function svg2ttfTransform(opt) {
 
     // Use the buffered content
       try {
-        buf = new Buffer(svg2ttf(String(buf)).buffer);
+        buf = new Buffer(svg2ttf(String(buf), {
+          ts: options.timestamp,
+          copyright: options.copyright
+        }).buffer);
         cb(null, buf);
-      } catch(err) {
-        cb(new gutil.PluginError(PLUGIN_NAME, err, {showStack: true}));
+      } catch(err2) {
+        cb(new gutil.PluginError(PLUGIN_NAME, err2, {showStack: true}));
       }
 
   };
@@ -33,11 +36,17 @@ function svg2ttfGulp(options) {
   options = options || {};
   options.ignoreExt = options.ignoreExt || false;
   options.clone = options.clone || false;
+  options.timestamp = 'number' === typeof options.timestamp ?
+    options.timestamp :
+    {}.undef;
+  options.copyright = 'string' === typeof options.copyright ?
+    options.copyright :
+    {}.undef;
 
   var stream = Stream.Transform({objectMode: true});
-  
+
   stream._transform = function(file, unused, done) {
-     // When null just pass through
+    // When null just pass through
     if(file.isNull()) {
       stream.push(file); done();
       return;
@@ -69,24 +78,27 @@ function svg2ttfGulp(options) {
     // Buffers
     if(file.isBuffer()) {
       try {
-        file.contents = new Buffer(svg2ttf(String(file.contents)).buffer);
+        file.contents = new Buffer(svg2ttf(String(file.contents), {
+          ts: options.timestamp,
+          copyright: options.copyright
+        }).buffer);
       } catch(err) {
-        stream.emit('error', 
+        stream.emit('error',
           new gutil.PluginError(PLUGIN_NAME, err, {showStack: true}));
       }
 
     // Streams
     } else {
-      file.contents = file.contents.pipe(new BufferStreams(svg2ttfTransform()));
+      file.contents = file.contents.pipe(new BufferStreams(svg2ttfTransform(options)));
     }
 
     stream.push(file);
     done();
   };
-  
+
   return stream;
 
-};
+}
 
 // Export the file level transform function for other plugins usage
 svg2ttfGulp.fileTransform = svg2ttfTransform;

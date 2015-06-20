@@ -30,7 +30,7 @@
   "dependencies": {
     "bufferstreams": "1.0.1",
     "gulp-util": "~3.0.5",
-    "readable-stream": "^1.0.33",
+    "readable-stream": "^2.0.0",
     "svg2ttf": "~2.0.0"
   },
   "keywords": [
@@ -43,8 +43,11 @@
     "converter"
   ],
   "devDependencies": {
+    "coveralls": "~2.11.2",
     "gulp": "~3.9.0",
+    "istanbul": "~0.3.15",
     "mocha": "~2.2.5",
-    "streamtest": "^1.2.0"
+    "mocha-lcov-reporter": "0.0.2",
+    "streamtest": "^1.2.1"
   }
 }
