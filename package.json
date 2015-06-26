@@ -30,10 +30,18 @@
     "cover": "./node_modules/istanbul/lib/cli.js cover --report html ./node_modules/mocha/bin/_mocha -- tests/*.mocha.js -R spec -t 5000"
   },
   "dependencies": {
-    "bufferstreams": "1.0.1",
-    "gulp-util": "~3.0.5",
-    "readable-stream": "^2.0.0",
-    "svg2ttf": "~2.0.0"
+    "bufferstreams": "^1.0.2",
+    "gulp-util": "^3.0.6",
+    "readable-stream": "^2.0.1",
+    "svg2ttf": "^2.0.0"
+  },
+  "devDependencies": {
+    "coveralls": "^2.11.2",
+    "gulp": "^3.9.0",
+    "istanbul": "^0.3.16",
+    "mocha": "^2.2.5",
+    "mocha-lcov-reporter": "^0.0.2",
+    "streamtest": "^1.2.1"
   },
   "keywords": [
     "gulpplugin",
@@ -43,13 +51,5 @@
     "svg",
     "ttf",
     "converter"
-  ],
-  "devDependencies": {
-    "coveralls": "~2.11.2",
-    "gulp": "~3.9.0",
-    "istanbul": "~0.3.15",
-    "mocha": "~2.2.5",
-    "mocha-lcov-reporter": "0.0.2",
-    "streamtest": "^1.2.1"
-  }
+  ]
 }

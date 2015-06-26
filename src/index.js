@@ -1,10 +1,12 @@
+'use strict';
+
 var path = require('path');
 var Stream = require('readable-stream');
 var gutil = require('gulp-util');
 var BufferStreams = require('bufferstreams');
 var svg2ttf = require('svg2ttf');
 
-const PLUGIN_NAME = 'gulp-svg2ttf';
+var PLUGIN_NAME = 'gulp-svg2ttf';
 
 // File level transform function
 function svg2ttfTransform(options) {
@@ -105,4 +107,3 @@ svg2ttfGulp.fileTransform = svg2ttfTransform;
 
 // Export the plugin main function
 module.exports = svg2ttfGulp;
-
