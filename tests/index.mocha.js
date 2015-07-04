@@ -55,7 +55,7 @@ describe('gulp-svg2ttf conversion', function() {
               timestamp: generationTimestamp
             }))
             // Uncomment to regenerate the test files if changes in the svg2ttf lib
-            .pipe(gulp.dest(__dirname + '/fixtures/'))
+            //.pipe(gulp.dest(__dirname + '/fixtures/'))
             .pipe(StreamTest[version].toObjects(function(err, objs) {
               if(err) {
                 done(err);
@@ -75,8 +75,6 @@ describe('gulp-svg2ttf conversion', function() {
               timestamp: generationTimestamp,
               copyright: 'Brothershood of mens 2015 - Infinity'
             }))
-            // Uncomment to regenerate the test files if changes in the svg2ttf lib
-            //.pipe(gulp.dest(__dirname + '/fixtures/'))
             .pipe(StreamTest[version].toObjects(function(err, objs) {
               if(err) {
                 done(err);
