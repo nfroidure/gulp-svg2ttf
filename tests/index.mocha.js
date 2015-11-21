@@ -1,9 +1,12 @@
+/* eslint max-nested-callbacks:0 func-names:0 */
+
 'use strict';
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var Stream = require('stream');
 var fs = require('fs');
+var path = require('path');
 
 var assert = require('assert');
 var StreamTest = require('streamtest');
@@ -11,7 +14,7 @@ var StreamTest = require('streamtest');
 var svg2ttf = require('../src/index.js');
 
 describe('gulp-svg2ttf conversion', function() {
-  var filename = __dirname + '/fixtures/iconsfont';
+  var filename = path.join(__dirname, 'fixtures', 'iconsfont');
   var ttf = fs.readFileSync(filename + '.ttf');
   var ttfCopyfighted = fs.readFileSync(filename + '-copyright.ttf');
   var generationTimestamp = 3;
@@ -25,22 +28,22 @@ describe('gulp-svg2ttf conversion', function() {
 
         it('should let null files pass through', function(done) {
 
-            StreamTest[version].fromObjects([new gutil.File({
-              path: 'bibabelula.foo',
-              contents: null
-            })])
-            .pipe(svg2ttf({
-              timestamp: generationTimestamp
-            }))
-            .pipe(StreamTest[version].toObjects(function(err, objs) {
-              if(err) {
-                done(err);
-              }
-              assert.equal(objs.length, 1);
-              assert.equal(objs[0].path, 'bibabelula.foo');
-              assert.equal(objs[0].contents, null);
-              done();
-            }));
+          StreamTest[version].fromObjects([new gutil.File({
+            path: 'bibabelula.foo',
+            contents: null,
+          })])
+          .pipe(svg2ttf({
+            timestamp: generationTimestamp,
+          }))
+          .pipe(StreamTest[version].toObjects(function(err, objs) {
+            if(err) {
+              return done(err);
+            }
+            assert.equal(objs.length, 1);
+            assert.equal(objs[0].path, 'bibabelula.foo');
+            assert.equal(objs[0].contents, null);
+            done();
+          }));
 
         });
 
@@ -50,14 +53,14 @@ describe('gulp-svg2ttf conversion', function() {
 
         it('should work', function(done) {
 
-          gulp.src(filename + '.svg', {buffer: true})
+          gulp.src(filename + '.svg', { buffer: true })
             .pipe(svg2ttf({
-              timestamp: generationTimestamp
+              timestamp: generationTimestamp,
             }))
             // Uncomment to regenerate the test files if changes in the svg2ttf lib
             .pipe(StreamTest[version].toObjects(function(err, objs) {
               if(err) {
-                done(err);
+                return done(err);
               }
               assert.equal(objs.length, 1);
               assert.equal(objs[0].path, filename + '.ttf');
@@ -69,14 +72,14 @@ describe('gulp-svg2ttf conversion', function() {
 
         it('should work with the copyright option', function(done) {
 
-          gulp.src(filename + '.svg', {buffer: true})
+          gulp.src(filename + '.svg', { buffer: true })
             .pipe(svg2ttf({
               timestamp: generationTimestamp,
-              copyright: 'Brothershood of mens 2015 - Infinity'
+              copyright: 'Brothershood of mens 2015 - Infinity',
             }))
             .pipe(StreamTest[version].toObjects(function(err, objs) {
               if(err) {
-                done(err);
+                return done(err);
               }
               assert.equal(objs.length, 1);
               assert.equal(objs[0].path, filename + '.ttf');
@@ -88,18 +91,21 @@ describe('gulp-svg2ttf conversion', function() {
 
         it('should work with the clone option', function(done) {
 
-          gulp.src(filename + '.svg', {buffer: true})
+          gulp.src(filename + '.svg', { buffer: true })
             .pipe(svg2ttf({
               clone: true,
-              timestamp: generationTimestamp
+              timestamp: generationTimestamp,
             }))
             .pipe(StreamTest[version].toObjects(function(err, objs) {
               if(err) {
-                done(err);
+                return done(err);
               }
               assert.equal(objs.length, 2);
               assert.equal(objs[0].path, filename + '.svg');
-              assert.equal(objs[0].contents.toString('utf-8'), fs.readFileSync(filename + '.svg','utf-8'));
+              assert.equal(
+                objs[0].contents.toString('utf-8'),
+                fs.readFileSync(filename + '.svg', 'utf-8')
+              );
               assert.equal(objs[1].path, filename + '.ttf');
               assert.equal(objs[1].contents.toString('utf-8'), ttf.toString('utf-8'));
               done();
@@ -109,19 +115,22 @@ describe('gulp-svg2ttf conversion', function() {
 
         it('should let non-svg files pass through', function(done) {
 
-            StreamTest[version].fromObjects([new gutil.File({
-              path: 'bibabelula.foo',
-              contents: new Buffer('ohyeah')
-            })])
-            .pipe(svg2ttf({
-              timestamp: generationTimestamp
-            }))
-            .pipe(StreamTest[version].toObjects(function(err, objs) {
-                assert.equal(objs.length, 1);
-                assert.equal(objs[0].path, 'bibabelula.foo');
-                assert.equal(objs[0].contents.toString('utf-8'), 'ohyeah');
-                done();
-            }));
+          StreamTest[version].fromObjects([new gutil.File({
+            path: 'bibabelula.foo',
+            contents: new Buffer('ohyeah'),
+          })])
+          .pipe(svg2ttf({
+            timestamp: generationTimestamp,
+          }))
+          .pipe(StreamTest[version].toObjects(function(err, objs) {
+            if(err) {
+              return done(err);
+            }
+            assert.equal(objs.length, 1);
+            assert.equal(objs[0].path, 'bibabelula.foo');
+            assert.equal(objs[0].contents.toString('utf-8'), 'ohyeah');
+            done();
+          }));
 
         });
       });
@@ -130,17 +139,20 @@ describe('gulp-svg2ttf conversion', function() {
       describe('in stream mode', function() {
         it('should work', function(done) {
 
-          gulp.src(filename + '.svg', {buffer: false})
+          gulp.src(filename + '.svg', { buffer: false })
             .pipe(svg2ttf({
-              timestamp: generationTimestamp
+              timestamp: generationTimestamp,
             }))
             .pipe(StreamTest[version].toObjects(function(err, objs) {
               if(err) {
-                done(err);
+                return done(err);
               }
               assert.equal(objs.length, 1);
               assert.equal(objs[0].path, filename + '.ttf');
               objs[0].contents.pipe(StreamTest[version].toChunks(function(err, chunks) {
+                if(err) {
+                  return done(err);
+                }
                 assert.deepEqual(Buffer.concat(chunks), ttf);
                 done();
               }));
@@ -150,21 +162,27 @@ describe('gulp-svg2ttf conversion', function() {
 
         it('should work with the clone option', function(done) {
 
-          gulp.src(filename + '.svg', {buffer: false})
+          gulp.src(filename + '.svg', { buffer: false })
             .pipe(svg2ttf({
               clone: true,
-              timestamp: generationTimestamp
+              timestamp: generationTimestamp,
             }))
             .pipe(StreamTest[version].toObjects(function(err, objs) {
               if(err) {
-                done(err);
+                return done(err);
               }
               assert.equal(objs.length, 2);
               assert.equal(objs[0].path, filename + '.svg');
               assert.equal(objs[1].path, filename + '.ttf');
               objs[0].contents.pipe(StreamTest[version].toText(function(err, text) {
-                assert.equal(text, fs.readFileSync(filename + '.svg','utf-8'));
+                if(err) {
+                  return done(err);
+                }
+                assert.equal(text, fs.readFileSync(filename + '.svg', 'utf-8'));
                 objs[1].contents.pipe(StreamTest[version].toChunks(function(err, chunks) {
+                  if(err) {
+                    return done(err);
+                  }
                   assert.deepEqual(Buffer.concat(chunks), ttf);
                   done();
                 }));
@@ -177,14 +195,14 @@ describe('gulp-svg2ttf conversion', function() {
 
           StreamTest[version].fromObjects([new gutil.File({
             path: 'bibabelula.foo',
-            contents: new Stream.PassThrough()
+            contents: new Stream.PassThrough(),
           })])
           .pipe(svg2ttf({
-            timestamp: generationTimestamp
+            timestamp: generationTimestamp,
           }))
           .pipe(StreamTest[version].toObjects(function(err, objs) {
             if(err) {
-              done(err);
+              return done(err);
             }
             assert.equal(objs.length, 1);
             assert.equal(objs[0].path, 'bibabelula.foo');

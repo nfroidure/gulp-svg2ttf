@@ -11,29 +11,30 @@ var PLUGIN_NAME = 'gulp-svg2ttf';
 // File level transform function
 function svg2ttfTransform(options) {
   // Return a callback function handling the buffered content
-  return function(err, buf, cb) {
+  return function svg2ttfTransformCb(err, buf, cb) {
 
     // Handle any error
     if(err) {
-      cb(new gutil.PluginError(PLUGIN_NAME, err, {showStack: true}));
+      return cb(new gutil.PluginError(PLUGIN_NAME, err, { showStack: true }));
     }
 
     // Use the buffered content
-      try {
-        buf = new Buffer(svg2ttf(String(buf), {
-          ts: options.timestamp,
-          copyright: options.copyright
-        }).buffer);
-        cb(null, buf);
-      } catch(err2) {
-        cb(new gutil.PluginError(PLUGIN_NAME, err2, {showStack: true}));
-      }
+    try {
+      buf = new Buffer(svg2ttf(String(buf), {
+        ts: options.timestamp,
+        copyright: options.copyright,
+      }).buffer);
+      return cb(null, buf);
+    } catch(err2) {
+      return cb(new gutil.PluginError(PLUGIN_NAME, err2, { showStack: true }));
+    }
 
   };
 }
 
 // Plugin function
 function svg2ttfGulp(options) {
+  var stream = new Stream.Transform({ objectMode: true });
 
   options = options || {};
   options.ignoreExt = options.ignoreExt || false;
@@ -45,9 +46,10 @@ function svg2ttfGulp(options) {
     options.copyright :
     {}.undef;
 
-  var stream = Stream.Transform({objectMode: true});
+  stream._transform = function svg2ttfTransformStream(file, unused, done) {
+    var cntStream;
+    var newFile;
 
-  stream._transform = function(file, unused, done) {
     // When null just pass through
     if(file.isNull()) {
       stream.push(file); done();
@@ -66,27 +68,27 @@ function svg2ttfGulp(options) {
       if(file.isBuffer()) {
         stream.push(file.clone());
       } else {
-        var cntStream = file.contents;
+        cntStream = file.contents;
         file.contents = null;
-        var newFile = file.clone();
+        newFile = file.clone();
         file.contents = cntStream.pipe(new Stream.PassThrough());
         newFile.contents = cntStream.pipe(new Stream.PassThrough());
         stream.push(newFile);
       }
     }
 
-    file.path = gutil.replaceExtension(file.path, ".ttf");
+    file.path = gutil.replaceExtension(file.path, '.ttf');
 
     // Buffers
     if(file.isBuffer()) {
       try {
         file.contents = new Buffer(svg2ttf(String(file.contents), {
           ts: options.timestamp,
-          copyright: options.copyright
+          copyright: options.copyright,
         }).buffer);
       } catch(err) {
         stream.emit('error',
-          new gutil.PluginError(PLUGIN_NAME, err, {showStack: true}));
+          new gutil.PluginError(PLUGIN_NAME, err, { showStack: true }));
       }
 
     // Streams
