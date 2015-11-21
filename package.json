@@ -30,17 +30,17 @@
     "cover": "./node_modules/istanbul/lib/cli.js cover --report html ./node_modules/mocha/bin/_mocha -- tests/*.mocha.js -R spec -t 5000"
   },
   "dependencies": {
-    "bufferstreams": "^1.0.2",
-    "gulp-util": "^3.0.6",
-    "readable-stream": "^2.0.2",
-    "svg2ttf": "^2.0.1"
+    "bufferstreams": "^1.1.0",
+    "gulp-util": "^3.0.7",
+    "readable-stream": "^2.0.4",
+    "svg2ttf": "^2.1.0"
   },
   "devDependencies": {
-    "coveralls": "^2.11.2",
+    "coveralls": "^2.11.4",
     "gulp": "^3.9.0",
-    "istanbul": "^0.3.17",
-    "mocha": "^2.2.5",
-    "mocha-lcov-reporter": "^0.0.2",
+    "istanbul": "^0.4.0",
+    "mocha": "^2.3.4",
+    "mocha-lcov-reporter": "^1.0.0",
     "streamtest": "^1.2.1"
   },
   "keywords": [
