@@ -85,6 +85,7 @@ function svg2ttfGulp(options) {
         file.contents = new Buffer(svg2ttf(String(file.contents), {
           ts: options.timestamp,
           copyright: options.copyright,
+          version: options.version
         }).buffer);
       } catch(err) {
         stream.emit('error',
