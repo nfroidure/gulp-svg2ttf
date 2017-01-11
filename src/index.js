@@ -23,6 +23,7 @@ function svg2ttfTransform(options) {
       buf = new Buffer(svg2ttf(String(buf), {
         ts: options.timestamp,
         copyright: options.copyright,
+        version: options.version
       }).buffer);
       return cb(null, buf);
     } catch(err2) {

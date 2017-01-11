@@ -211,6 +211,30 @@ describe('gulp-svg2ttf conversion', function() {
 
         });
 
+        it('should work with the version option', function(done) {
+
+          gulp.src(filename + '.svg', { buffer: false })
+            .pipe(svg2ttf({
+              timestamp: generationTimestamp,
+              version: '2.0',
+            }))
+            .pipe(StreamTest[version].toObjects(function(err, objs) {
+              if(err) {
+                return done(err);
+              }
+              assert.equal(objs.length, 1);
+              assert.equal(objs[0].path, filename + '.ttf');
+              objs[0].contents.pipe(StreamTest[version].toChunks(function(err, chunks) {
+                if(err) {
+                  return done(err);
+                }
+                assert.deepEqual(Buffer.concat(chunks), ttfVersioned);
+                done();
+              }));
+            }));
+
+        });
+
         it('should let non-svg files pass through', function(done) {
 
           StreamTest[version].fromObjects([new gutil.File({
