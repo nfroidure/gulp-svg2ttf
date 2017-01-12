@@ -17,6 +17,7 @@ describe('gulp-svg2ttf conversion', function() {
   var filename = path.join(__dirname, 'fixtures', 'iconsfont');
   var ttf = fs.readFileSync(filename + '.ttf');
   var ttfCopyfighted = fs.readFileSync(filename + '-copyright.ttf');
+  var ttfVersioned = fs.readFileSync(filename + '-versioned.ttf');
   var generationTimestamp = 3;
 
   // Iterating through versions
@@ -84,6 +85,25 @@ describe('gulp-svg2ttf conversion', function() {
               assert.equal(objs.length, 1);
               assert.equal(objs[0].path, filename + '.ttf');
               assert.deepEqual(objs[0].contents, ttfCopyfighted);
+              done();
+            }));
+
+        });
+
+        it('should work with the version option', function(done) {
+
+          gulp.src(filename + '.svg', { buffer: true })
+            .pipe(svg2ttf({
+              timestamp: generationTimestamp,
+              version: '2.0',
+            }))
+            .pipe(StreamTest[version].toObjects(function(err, objs) {
+              if(err) {
+                return done(err);
+              }
+              assert.equal(objs.length, 1);
+              assert.equal(objs[0].path, filename + '.ttf');
+              assert.deepEqual(objs[0].contents, ttfVersioned);
               done();
             }));
 
@@ -186,6 +206,30 @@ describe('gulp-svg2ttf conversion', function() {
                   assert.deepEqual(Buffer.concat(chunks), ttf);
                   done();
                 }));
+              }));
+            }));
+
+        });
+
+        it('should work with the version option', function(done) {
+
+          gulp.src(filename + '.svg', { buffer: false })
+            .pipe(svg2ttf({
+              timestamp: generationTimestamp,
+              version: '2.0',
+            }))
+            .pipe(StreamTest[version].toObjects(function(err, objs) {
+              if(err) {
+                return done(err);
+              }
+              assert.equal(objs.length, 1);
+              assert.equal(objs[0].path, filename + '.ttf');
+              objs[0].contents.pipe(StreamTest[version].toChunks(function(err, chunks) {
+                if(err) {
+                  return done(err);
+                }
+                assert.deepEqual(Buffer.concat(chunks), ttfVersioned);
+                done();
               }));
             }));
 
