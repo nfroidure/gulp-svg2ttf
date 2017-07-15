@@ -31,15 +31,15 @@
     "bufferstreams": "^1.1.0",
     "gulp-util": "^3.0.7",
     "readable-stream": "^2.0.4",
-    "svg2ttf": "^4.0.0"
+    "svg2ttf": "^4.1.0"
   },
   "devDependencies": {
     "coveralls": "^2.11.4",
-    "eslint": "^1.10.1",
-    "eslint-config-simplifield": "^1.1.0",
+    "eslint": "^4.2.0",
+    "eslint-config-simplifield": "^6.0.0",
     "gulp": "^3.9.0",
     "istanbul": "^0.4.0",
-    "mocha": "^2.3.4",
+    "mocha": "^3.4.2",
     "mocha-lcov-reporter": "^1.0.0",
     "streamtest": "^1.2.1"
   },
