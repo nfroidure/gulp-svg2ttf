@@ -21,11 +21,7 @@ function svg2ttfTransform(options) {
 
     // Use the buffered content
     try {
-      buf = Buffer.from(svg2ttf(String(buf), {
-        ts: options.timestamp,
-        copyright: options.copyright,
-        version: options.version,
-      }).buffer);
+      buf = Buffer.from(svg2ttf(String(buf), options).buffer);
     } catch (err2) {
       cb(new gutil.PluginError(PLUGIN_NAME, err2, { showStack: true }));
       return;
@@ -84,11 +80,7 @@ function svg2ttfGulp(options) {
     // Buffers
     if(file.isBuffer()) {
       try {
-        file.contents = Buffer.from(svg2ttf(String(file.contents), {
-          ts: options.timestamp,
-          copyright: options.copyright,
-          version: options.version,
-        }).buffer);
+        file.contents = Buffer.from(svg2ttf(String(file.contents), options).buffer);
       } catch (err) {
         stream.emit('error',
           new gutil.PluginError(PLUGIN_NAME, err, { showStack: true }));
