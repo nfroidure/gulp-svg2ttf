@@ -37,7 +37,7 @@ function svg2ttfGulp(options) {
   options = options || {};
   options.ignoreExt = options.ignoreExt || false;
   options.clone = options.clone || false;
-  options.timestamp = 'number' === typeof options.timestamp ?
+  options.ts = 'number' === typeof options.timestamp ?
     options.timestamp :
     {}.undef;
   options.copyright = 'string' === typeof options.copyright ?
