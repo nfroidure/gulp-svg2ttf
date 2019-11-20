@@ -3,6 +3,7 @@
 const path = require('path');
 const Stream = require('readable-stream');
 const gutil = require('gulp-util');
+const replaceExt = require('replace-ext');
 const BufferStreams = require('bufferstreams');
 const svg2ttf = require('svg2ttf');
 
@@ -79,7 +80,7 @@ function svg2ttfGulp(options) {
       }
     }
 
-    file.path = gutil.replaceExtension(file.path, '.ttf');
+    file.path = replaceExt(file.path, '.ttf');
 
     // Buffers
     if(file.isBuffer()) {
