@@ -294,7 +294,7 @@ describe('gulp-svg2ttf conversion', function() {
                 }
                 assert.equal(objs.length, 1);
                 assert.equal(objs[0].path, 'bibabelula.foo');
-                assert(objs[0].contents instanceof Stream.PassThrough);
+                assert(objs[0].contents instanceof Stream);
                 done();
               })
             );
