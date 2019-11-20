@@ -3,7 +3,7 @@
 'use strict';
 
 const gulp = require('gulp');
-const gutil = require('gulp-util');
+const Vinyl = require('vinyl');
 const Stream = require('stream');
 const fs = require('fs');
 const path = require('path');
@@ -30,7 +30,7 @@ describe('gulp-svg2ttf conversion', function() {
         it('should let null files pass through', function(done) {
 
           StreamTest[version]
-            .fromObjects([new gutil.File({
+            .fromObjects([new Vinyl({
               path: 'bibabelula.foo',
               contents: null,
             })])
@@ -155,7 +155,7 @@ describe('gulp-svg2ttf conversion', function() {
 
         it('should let non-svg files pass through', function(done) {
 
-          StreamTest[version].fromObjects([new gutil.File({
+          StreamTest[version].fromObjects([new Vinyl({
             path: 'bibabelula.foo',
             contents: Buffer.from('ohyeah'),
           })])
@@ -279,7 +279,7 @@ describe('gulp-svg2ttf conversion', function() {
 
         it('should let non-svg files pass through', function(done) {
 
-          StreamTest[version].fromObjects([new gutil.File({
+          StreamTest[version].fromObjects([new Vinyl({
             path: 'bibabelula.foo',
             contents: new Stream.PassThrough(),
           })])
@@ -294,7 +294,7 @@ describe('gulp-svg2ttf conversion', function() {
                 }
                 assert.equal(objs.length, 1);
                 assert.equal(objs[0].path, 'bibabelula.foo');
-                assert(objs[0].contents instanceof Stream.PassThrough);
+                assert(objs[0].contents instanceof Stream);
                 done();
               })
             );
