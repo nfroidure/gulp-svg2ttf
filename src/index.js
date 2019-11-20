@@ -2,7 +2,7 @@
 
 const path = require('path');
 const Stream = require('readable-stream');
-const gutil = require('gulp-util');
+const PluginError = require('plugin-error');
 const replaceExt = require('replace-ext');
 const BufferStreams = require('bufferstreams');
 const svg2ttf = require('svg2ttf');
@@ -16,7 +16,7 @@ function svg2ttfTransform(options) {
 
     // Handle any error
     if(err) {
-      cb(new gutil.PluginError(PLUGIN_NAME, err, { showStack: true }));
+      cb(new PluginError(PLUGIN_NAME, err, { showStack: true }));
       return;
     }
 
@@ -28,7 +28,7 @@ function svg2ttfTransform(options) {
         version: options.version,
       }).buffer);
     } catch (err2) {
-      cb(new gutil.PluginError(PLUGIN_NAME, err2, { showStack: true }));
+      cb(new PluginError(PLUGIN_NAME, err2, { showStack: true }));
       return;
     }
     cb(null, buf);
@@ -92,7 +92,7 @@ function svg2ttfGulp(options) {
         }).buffer);
       } catch (err) {
         stream.emit('error',
-          new gutil.PluginError(PLUGIN_NAME, err, { showStack: true }));
+          new PluginError(PLUGIN_NAME, err, { showStack: true }));
       }
 
     // Streams
