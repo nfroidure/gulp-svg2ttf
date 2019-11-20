@@ -31,6 +31,7 @@
     "bufferstreams": "^1.1.0",
     "gulp-util": "^3.0.7",
     "readable-stream": "^2.0.4",
+    "replace-ext": "^1.0.0",
     "svg2ttf": "^4.1.0"
   },
   "devDependencies": {
