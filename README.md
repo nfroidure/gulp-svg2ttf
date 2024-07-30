@@ -88,7 +88,7 @@ You may want to contribute to this project, pull requests are welcome if you
 [//]: # (::contents:end)
 
 # Authors
-
+- [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
 [MIT](https://github.com/nfroidure/gulp-svg2ttf/blob/main/LICENSE)
